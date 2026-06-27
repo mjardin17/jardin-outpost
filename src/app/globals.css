@@ -1,26 +1,130 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0e0c0a;
+  --background-raised: #161310;
+  --foreground: #f3ede2;
+  --muted: #a89e8e;
+  --accent: #d99a4e;
+  --accent-soft: #f0c789;
+  --border: #2a251f;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-raised: var(--background-raised);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-border: var(--border);
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-inter);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+.text-gradient-accent {
+  background: linear-gradient(120deg, var(--accent-soft), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.bg-grain {
+  background-image: radial-gradient(circle at 1px 1px, rgba(243, 237, 226, 0.05) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+.neon-sign {
+  display: inline-block;
+  padding: 4px 2px 14px;
+}
+
+.neon-sign-text {
+  position: relative;
+  display: inline-block;
+  color: var(--accent-soft);
+  text-shadow:
+    0 0 4px var(--accent-soft),
+    0 0 11px var(--accent),
+    0 0 19px var(--accent),
+    0 0 40px var(--accent);
+  animation: neon-flicker 4.5s infinite ease-in-out;
+  will-change: transform;
+}
+
+.neon-sign-text .italic {
+  color: var(--accent-soft);
+}
+
+/* Extruded depth layers: stacked copies pushed back in Z, darkening with depth */
+.neon-sign-text::before,
+.neon-sign-text::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  white-space: nowrap;
+  font-style: normal;
+  text-shadow: none;
+  pointer-events: none;
+}
+
+.neon-sign-text::before {
+  color: #1a1308;
+  transform: translateZ(-6px);
+  opacity: 0.9;
+}
+
+.neon-sign-text::after {
+  color: #0e0a04;
+  transform: translateZ(-12px);
+  opacity: 0.85;
+}
+
+/* Ground shadow that grows as the sign lifts off the page on hover */
+.neon-sign {
+  position: relative;
+}
+
+.neon-sign::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 2px;
+  height: 10px;
+  border-radius: 999px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.55), transparent 75%);
+  opacity: 0.5;
+  transform: scaleX(0.7);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+}
+
+.neon-sign:hover::after {
+  opacity: 0.85;
+  transform: scaleX(1);
+}
+
+@keyframes neon-flicker {
+  0%, 96%, 100% {
+    opacity: 1;
+  }
+  97% {
+    opacity: 0.82;
+  }
+  98% {
+    opacity: 1;
+  }
+  98.5% {
+    opacity: 0.7;
+  }
+  99% {
+    opacity: 1;
+  }
 }
