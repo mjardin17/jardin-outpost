@@ -2,6 +2,7 @@ import NavBar from "@/components/NavBar";
 import Hero from "@/components/Hero";
 import AppsSection from "@/components/AppsSection";
 import StoreSection from "@/components/StoreSection";
+import InventorySection from "@/components/InventorySection";
 import ServicesSection from "@/components/ServicesSection";
 import ContactSection from "@/components/ContactSection";
 
@@ -13,6 +14,7 @@ export default function Home() {
         <Hero />
         <AppsSection />
         <StoreSection />
+        <InventorySection />
         <ServicesSection />
         <ContactSection />
       </main>

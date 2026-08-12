@@ -3,6 +3,7 @@ import NeonSign from "./NeonSign";
 const links = [
   { href: "#apps", label: "Apps" },
   { href: "#store", label: "Store" },
+  { href: "#inventory", label: "Inventory" },
   { href: "#services", label: "Services" },
   { href: "/workspace", label: "Workspace" },
   { href: "#contact", label: "Contact" },
