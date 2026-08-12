@@ -1,4 +1,11 @@
-export type ProviderId = "claude" | "gemini" | "chatgpt" | "grok";
+export type ProviderId =
+  | "claude"
+  | "gemini"
+  | "chatgpt"
+  | "grok"
+  | "groq"
+  | "openrouter"
+  | "deepseek";
 
 export function getStoredKey(provider: ProviderId): string | null {
   if (typeof window === "undefined") return null;
@@ -10,6 +17,9 @@ const MODEL_NAMES: Record<ProviderId, string> = {
   gemini: "gemini-2.0-flash",
   chatgpt: "gpt-4o-mini",
   grok: "grok-2-latest",
+  groq: "llama-3.3-70b-versatile",
+  openrouter: "meta-llama/llama-3.3-70b-instruct:free",
+  deepseek: "deepseek-chat",
 };
 
 export function modelLabel(provider: ProviderId) {
@@ -130,6 +140,30 @@ export async function callProvider(
         "https://api.x.ai/v1",
         apiKey,
         MODEL_NAMES.grok,
+        systemPrompt,
+        history,
+      );
+    case "groq":
+      return callOpenAiCompatible(
+        "https://api.groq.com/openai/v1",
+        apiKey,
+        MODEL_NAMES.groq,
+        systemPrompt,
+        history,
+      );
+    case "openrouter":
+      return callOpenAiCompatible(
+        "https://openrouter.ai/api/v1",
+        apiKey,
+        MODEL_NAMES.openrouter,
+        systemPrompt,
+        history,
+      );
+    case "deepseek":
+      return callOpenAiCompatible(
+        "https://api.deepseek.com/v1",
+        apiKey,
+        MODEL_NAMES.deepseek,
         systemPrompt,
         history,
       );

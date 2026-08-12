@@ -3,16 +3,26 @@
 import { useEffect, useState } from "react";
 
 type Provider = {
-  id: "claude" | "gemini" | "chatgpt" | "grok";
+  id: "claude" | "gemini" | "chatgpt" | "grok" | "groq" | "openrouter" | "deepseek";
   name: string;
   helpUrl: string;
+  free?: boolean;
+  tagLabel?: string;
 };
 
 const providers: Provider[] = [
   { id: "claude", name: "Claude", helpUrl: "https://console.anthropic.com/settings/keys" },
-  { id: "gemini", name: "Gemini", helpUrl: "https://aistudio.google.com/apikey" },
+  { id: "gemini", name: "Gemini", helpUrl: "https://aistudio.google.com/apikey", free: true },
   { id: "chatgpt", name: "ChatGPT", helpUrl: "https://platform.openai.com/api-keys" },
   { id: "grok", name: "Grok", helpUrl: "https://console.x.ai" },
+  { id: "groq", name: "Groq", helpUrl: "https://console.groq.com/keys", free: true },
+  { id: "openrouter", name: "OpenRouter", helpUrl: "https://openrouter.ai/keys", free: true },
+  {
+    id: "deepseek",
+    name: "DeepSeek",
+    helpUrl: "https://platform.deepseek.com/api_keys",
+    tagLabel: "Low-cost",
+  },
 ];
 
 const storageKey = (id: string) => `outpost.apikey.${id}`;
@@ -69,7 +79,14 @@ export default function AiHookups() {
                 }`}
               >
                 <div className="mb-3 flex items-center justify-between">
-                  <h3 className="font-display text-lg">{p.name}</h3>
+                  <h3 className="font-display text-lg">
+                    {p.name}
+                    {(p.free || p.tagLabel) && (
+                      <span className="ml-2 rounded-full border border-accent/40 px-2 py-0.5 text-[10px] uppercase tracking-wide text-accent-soft">
+                        {p.tagLabel ?? "Free tier"}
+                      </span>
+                    )}
+                  </h3>
                   <span
                     className={`h-2.5 w-2.5 rounded-full ${
                       connected ? "bg-accent" : "bg-border"

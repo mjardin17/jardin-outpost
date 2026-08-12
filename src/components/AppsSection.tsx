@@ -1,38 +1,14 @@
-type AppItem = {
-  name: string;
-  description: string;
-  status: "Live" | "In progress" | "Coming soon";
-  href: string;
-};
+import { projects, type Project } from "@/data/projects";
 
-const apps: AppItem[] = [
-  {
-    name: "StoryForge",
-    description:
-      "Book-building studio — characters, worlds, series, and exports, all in one factory.",
-    status: "Live",
-    href: "http://localhost:3004",
-  },
-  {
-    name: "ADHD Focus Companion",
-    description:
-      "Task breakdowns, a visual pomodoro timer, and a brain-dump area for active brains.",
-    status: "Live",
-    href: "http://localhost:3003",
-  },
-  {
-    name: "Add your next app",
-    description: "Keep stacking these as you ship more.",
-    status: "Coming soon",
-    href: "#",
-  },
-];
-
-const statusStyles: Record<AppItem["status"], string> = {
+const statusStyles: Record<Project["status"], string> = {
   Live: "border-accent/40 text-accent-soft",
   "In progress": "border-border text-muted",
   "Coming soon": "border-border text-muted",
 };
+
+function projectHref(project: Project): string {
+  return project.kind === "iframe" ? `/apps/${project.slug}` : project.url;
+}
 
 export default function AppsSection() {
   return (
@@ -47,24 +23,24 @@ export default function AppsSection() {
           </p>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {apps.map((app) => {
-            const isLive = app.status === "Live";
+          {projects.map((project) => {
+            const isLive = project.status === "Live";
             const card = (
               <article
-                key={app.name}
+                key={project.slug}
                 className="group relative flex flex-col justify-between rounded-2xl border border-border bg-background-raised p-6 transition-colors hover:border-accent/40"
               >
                 <div>
                   <span
-                    className={`mb-4 inline-block rounded-full border px-3 py-1 text-xs uppercase tracking-wide ${statusStyles[app.status]}`}
+                    className={`mb-4 inline-block rounded-full border px-3 py-1 text-xs uppercase tracking-wide ${statusStyles[project.status]}`}
                   >
-                    {app.status}
+                    {project.status}
                   </span>
-                  <h3 className="font-display text-2xl">{app.name}</h3>
+                  <h3 className="font-display text-2xl">{project.name}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-muted">
-                    {app.description}
+                    {project.description}
                   </p>
-                  {isLive && (
+                  {isLive && project.kind === "iframe" && (
                     <p className="mt-3 text-xs text-muted">
                       Runs locally &mdash; start its dev server, then open it here.
                     </p>
@@ -78,10 +54,10 @@ export default function AppsSection() {
 
             return (
               <a
-                key={app.name}
-                href={app.href}
-                target="_blank"
-                rel="noopener noreferrer"
+                key={project.slug}
+                href={projectHref(project)}
+                target={project.kind === "iframe" ? "_blank" : undefined}
+                rel={project.kind === "iframe" ? "noopener noreferrer" : undefined}
                 className="block"
               >
                 {card}

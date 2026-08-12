@@ -13,10 +13,20 @@ interface Message {
 }
 
 const ROLE_PROVIDER_PREFERENCE: Record<Role, ProviderId[]> = {
-  Strategist: ['claude', 'grok', 'gemini', 'chatgpt'],
-  Writer: ['gemini', 'chatgpt', 'claude', 'grok'],
-  'Quality Control': ['chatgpt', 'grok', 'claude', 'gemini'],
+  Strategist: ['groq', 'claude', 'openrouter', 'deepseek', 'grok', 'gemini', 'chatgpt'],
+  Writer: ['gemini', 'openrouter', 'deepseek', 'chatgpt', 'claude', 'groq', 'grok'],
+  'Quality Control': ['openrouter', 'chatgpt', 'groq', 'deepseek', 'grok', 'claude', 'gemini'],
 };
+
+const ALL_PROVIDERS: ProviderId[] = [
+  'claude',
+  'gemini',
+  'chatgpt',
+  'grok',
+  'groq',
+  'openrouter',
+  'deepseek',
+];
 
 const ROLE_SYSTEM_PROMPT: Record<Role, string> = {
   Strategist:
@@ -45,8 +55,7 @@ export default function DiscussionRoom({ projectId }: { projectId: string }) {
   const [connectedCount, setConnectedCount] = useState(0);
 
   useEffect(() => {
-    const providers: ProviderId[] = ['claude', 'gemini', 'chatgpt', 'grok'];
-    setConnectedCount(providers.filter((p) => getStoredKey(p)).length);
+    setConnectedCount(ALL_PROVIDERS.filter((p) => getStoredKey(p)).length);
     setMessages([
       {
         role: 'System',
@@ -131,7 +140,7 @@ export default function DiscussionRoom({ projectId }: { projectId: string }) {
             AI Council Debate
           </h2>
           <p className="text-[10px] text-slate-500 uppercase">
-            {connectedCount} of 4 hookups connected
+            {connectedCount} of {ALL_PROVIDERS.length} hookups connected
           </p>
         </div>
       </div>

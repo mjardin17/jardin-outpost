@@ -2,6 +2,13 @@ import NavBar from "@/components/NavBar";
 import DiscussionRoom from "@/components/council/DiscussionRoom";
 import PipelineTracker from "@/components/council/PipelineTracker";
 
+export function generateStaticParams() {
+  return [
+    { projectId: "storyforge" },
+    { projectId: "adhd-focus-companion" },
+  ];
+}
+
 export default async function ProjectPage({
   params,
 }: {
